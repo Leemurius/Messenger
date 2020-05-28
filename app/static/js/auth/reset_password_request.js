@@ -1,10 +1,10 @@
-$('.validate-form').on('submit',function() {
-    const email = $('.email-input').val();
-    const data = {'email': email};
+$('.validate-form').on('submit', function () {
+    let email = $('.email-input').val();
+    let data = {'email': email};
 
-    var response = postAjaxInformation(getPrefixUrl() + '/api/reset', data);
-    if (response != true) {
-        const error_text = JSON.parse(JSON.parse(response).message);
+    let response = postAjaxInformation('/api/user/reset', data);
+    if (response.status_code != 200) {
+        let error_text = JSON.parse(JSON.parse(response.text).message);
         $('.email-input-div').attr('data-validate', error_text);
         showValidate($('.email-input'));
         return false;
@@ -12,7 +12,7 @@ $('.validate-form').on('submit',function() {
         $('.toast').stop().fadeIn(400).delay(3000).fadeOut(500);
         setTimeout(
             function () {
-                window.location.assign(getPrefixUrl() + "/")
+                window.location.assign("/")
             },
             3000
         );
@@ -20,18 +20,18 @@ $('.validate-form').on('submit',function() {
     }
 });
 
-$('.validate-form .input100').each(function(){
-    $(this).focus(function(){
-       hideValidate(this);
+$('.validate-form .input100').each(function () {
+    $(this).focus(function () {
+        hideValidate(this);
     });
 });
 
 function showValidate(input) {
-    var thisAlert = $(input).parent();
+    let thisAlert = $(input).parent();
     $(thisAlert).addClass('alert-validate');
 }
 
 function hideValidate(input) {
-    var thisAlert = $(input).parent();
+    let thisAlert = $(input).parent();
     $(thisAlert).removeClass('alert-validate');
 }
